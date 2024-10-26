@@ -1,88 +1,82 @@
+# Practice Test Rodobank - Mathew Vieira Bezerra
 
-[![](https://rodobank.com.br/themes/rodobank/assets/img/logo.png)](https://rodobank.com.br)
+## Para executar o Projeto
 
-# Prazo de Entrega: 25/10/2024
+Com o Makefile e o Docker instalado, executar em qualquer terminal o seguinte comando:
 
-# Teste para candidatos à vaga de Desenvolvedor PHP.
-Nesse teste analisaremos seu conhecimento geral e inclusive velocidade de desenvolvimento. Abaixo explicaremos tudo o que será necessário.
+```bash
 
-## Instruções
-O desafio consiste em implementar uma REST API com CRUD usando o framework Laravel 11 e banco de dados MySQL. A Funcionalidade principal é cadastrar, editar e deletar transportadoras, motoristas e caminhões. O Fluxo consiste em, uma Transportadora possui um ou vários motoristas cadastrados, um motorista pode estar cadastrado em uma ou várias Transportadoras e o Motorista possui um ou vários caminhões. Além do CRUD, o sistema deverá disponibilizar a lista dos cadastros que foram realizados.
+make setup
 
-## Modelo de dados
-A modelagem inicial para a implementação solução é a seguinte:
+```
 
-|Nome|Tipo|Nullable|
-|----|----|--------|
-|NomeTransportadora|varchar(100)|false|
-|CNPJTransportadora|char(14)|false|
-|StatusTransportadora|int|false|
-|NomeMotorista|varchar(100)|false|
-|CPFMotorista|char(11)|false|
-|DataNascimentoMotorista|datetime|false|
-|EmailMotorista|varchar(100)|true|
-|PlacaCaminhao|char(8)|false|
-|ModeloCaminhao|varchar(50)|false|
-|CorCaminhao|varchar(50)|false|
+## Para visualizar no Navegador
 
-Você deve alterar esta modelagem para que a mesma cumpra com as três primeiras formas normais.
+Rotas Principais do CRUD API:
 
-Além disso, a implementação deste modelo em um banco de dados relacional deve ser realizada levando em consideração os seguintes requisitos:
+<http://localhost:8080/api/transportadoras>
+<http://localhost:8080/api/motoristas>
+<http://localhost:8080/api/caminhoes>
+<http://localhost:8080/api/modelos>
 
-- O banco de dados deve ser criado utilizando Migrations do framework Laravel, e também utilizar Seeds para popular as informações no banco de dados.
-- Implementação das validações necessárias na camada que julgar melhor.
-- Deve existir um relacionamento de caminhão com modelo e motorista, caminhão TEM um modelo e PERTENCE a um motorista
-- Deve utilizar o padrão snake_case para o nome das colunas no banco de dados
+Endpoints e Verbos:
 
-## Validações no Cadastro/Update usando Form Request Validation
-- Transportadora
-  - nome: obrigatório
-  - cnpj: obrigatório | número | 14 digitos | único no banco de dados
-- Motorista
-  - nome: obrigatório
-  - cpf: obrigatório | número | 11 dígitos | único no banco de dados
-  - data_nascimento: obrigatório | data
-  - email: opcional | email
- - Caminhão
-   - motorista: obrigatório
-   - modelo: obrigatório
-   - placa: obrigatório | único no banco de dados
-- Modelo
-  - modelo: obrigatório
-  - cor: obrigatório
+```text
 
-## Regras de Negócio
-1. O cadastro de transportadora deve por padrão ser status = 1 ativado. Essa informação não precisar ser passada no request, isso deve ser responsabilidade do backend.
-2. No cadastro do motorista validar se o mesmo é maior de idade. Caso não seja não permitir o cadastro.
 
-## Criar registros na tabela modelo_caminhaousando Seeder
-- Gere no mínimo 5 registros de modelos de caminhões para serem usados nos cadastros dos caminhões.
- - Opcional e diferencial: usar o Factory
- 
- ## Endpoints de Listagem
-1. Listar as transportadoras;
-2. Altera o status de uma transportadora;
-3. Cadastrar e listar motoristas cadastrados na transportadora;
-4. Cadastro e vínculo de caminhões ao motorista;
-4. Visualizar os caminhões pertencentes a um motorista.
+GET|HEAD   api/caminhoes    CaminhaoController@index
+POST       api/caminhoes                   ...@store
+DELETE     api/caminhoes/removerTodos      ...@destroyAll
+GET|HEAD   api/caminhoes/{caminhao}        ...@show
+PUT|PATCH  api/caminhoes/{caminhao}        ...@update
+DELETE     api/caminhoes/{caminhao}        ...@destroy
 
-Obs.: Faça o relacionamento das tabelas para que seja possível acessar essas informações via relacionamento.
 
-## Tecnologias a serem utilizadas
-Devem ser utilizadas as seguintes tecnologias:
-- HTML
-- CSS
-- Javascript
-- Framework Laravel (PHP)
-- Docker
+GET|HEAD   api/modelos    ModeloController@index
+POST       api/modelos                 ...@store
+DELETE     api/modelos/removerTodos    ...@destroyAll
+GET|HEAD   api/modelos/{modelo}        ...@show
+PUT|PATCH  api/modelos/{modelo}        ...@update
+DELETE     api/modelos/{modelo}        ...@destroy
 
-## Entrega
-Para iniciar o teste, faça um fork deste repositório, crie uma branch com o seu nome completo e depois envie-nos o pull request. Se você apenas clonar o repositório não vai conseguir fazer push e depois vai ser mais complicado fazer o pull request.
 
-## Bônus
-- Implementar autenticação de usuário na aplicação.
-- Permitir que o usuário mude o número de itens por página.
-- Permitir remoção em massa de itens nos CRUDs.
-- Implementar a camada de Front-End utilizando Vue.JS
-- API Rest JSON para todos os CRUDS listados acima.
-- Uso de Repository 
+GET|HEAD   api/motoristas    MotoristaController@index
+POST       api/motoristas                    ...@store
+DELETE     api/motoristas/removerTodos       ...@destroyAll
+GET|HEAD   api/motoristas/{motorista}        ...@show
+PUT|PATCH  api/motoristas/{motorista}        ...@update
+DELETE     api/motoristas/{motorista}        ...@destroy
+
+
+GET|HEAD   api/transportadoras    TransportadoraController@index
+POST       api/transportadoras                         ...@store
+DELETE     api/transportadoras/removerTodos            ...@destroyAll
+GET|HEAD   api/transportadoras/{transportadora}        ...@show
+PUT|PATCH  api/transportadoras/{transportadora}        ...@update
+DELETE     api/transportadoras/{transportadora}        ...@destroy
+
+
+```
+
+Visualizar as rotas cadastras:
+
+```bash
+
+php artisan route:list
+
+```
+
+Para compreender mais sobre os Query Parameters, Campos e Formatos dos JSONs,
+analisar os Form Requests e Controllers contidos nas seguintes pastas:
+
+```text
+
+app/Http/Controller
+
+```
+
+```text
+
+app/Http/Requests
+
+```
